@@ -84,6 +84,8 @@ y2 = (date_l.year-3) % 12
 month_l = date_l.month
 day_l = date_l.day
 hour = int((date_now.hour+1)/2 % 12)+1
+if hour == 12:
+    hour = 0
 st.header(Stems[y1]+Branches[y2] + '年' + str(month_l) +
           '月'+str(day_l)+'號' + Branches[hour] + '時')
 
