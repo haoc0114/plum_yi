@@ -3,6 +3,7 @@ import datetime
 from cnlunardate import cnlunardate
 import random
 import numpy as np
+import pandas as pd
 
 # -----------------------------------------------------------
 tz = datetime.timezone(datetime.timedelta(hours=+8))   # 將時區固定在台灣
@@ -49,29 +50,47 @@ def gen_hexagram(x1, x2, x3):
     Original_sign = Hexagram_sign[x1][x2]
     Original_name = Hexagram_name[x1][x2]
     st.header('本卦為第'+str(Original)+'卦'+Original_sign+Original_name)
+    sign_all = num2tri[x2] + num2tri[x1]
+    m1 = tri2num[sign_all[2:5]]
+    m2 = tri2num[sign_all[1:4]]
+    Mutual = Hexagram[m1][m2]
+    Mutual_sign = Hexagram_sign[m1][m2]
+    Mutual_name = Hexagram_name[m1][m2]
+    st.header('互卦為第'+str(Mutual)+'卦'+Mutual_sign+Mutual_name)
+
     if x3 < 4:
+        relation = ['體', '用']
         temp = num2tri[x2]
         temp = list(temp)
         temp[x3-1] = str(abs(int(temp[x3-1])-1))
         tri = ''.join(temp)
         x2n = tri2num[tri]
-        Future = Hexagram[x1][x2n]
-        Future_sign = Hexagram_sign[x1][x2n]
-        Future_name = Hexagram_name[x1][x2n]
+        x1n = x1
+        Future = Hexagram[x1n][x2n]
+        Future_sign = Hexagram_sign[x1n][x2n]
+        Future_name = Hexagram_name[x1n][x2n]
     else:
+        relation = ['用', '體']
         temp = num2tri[x1]
         temp = list(temp)
         temp[x3-4] = str(abs(int(temp[x3-4])-1))
         tri = ''.join(temp)
         x1n = tri2num[tri]
-        Future = Hexagram[x1n][x2]
-        Future_sign = Hexagram_sign[x1n][x2]
-        Future_name = Hexagram_name[x1n][x2]
+        x2n = x2
+        Future = Hexagram[x1n][x2n]
+        Future_sign = Hexagram_sign[x1n][x2n]
+        Future_name = Hexagram_name[x1n][x2n]
     st.header('變卦為第'+str(Future)+'卦'+Future_sign+Future_name)
 
     link_1 = '[本卦解](https://www.eee-learning.com/book/neweee%02d' % Original+')'
+    link_3 = '[互卦解](https://www.eee-learning.com/book/neweee%02d' % Mutual+')'
     link_2 = '[變卦解](https://www.eee-learning.com/book/neweee%02d' % Future+')'
-    st.markdown(link_1+';   '+link_2, unsafe_allow_html=True)
+    st.markdown(link_1+';   '+link_3+';   '+link_2, unsafe_allow_html=True)
+
+    df2 = pd.DataFrame({'本卦': [Trigram_sign[x1]+Trigram[x1], Trigram_sign[x2]+Trigram[x2]],
+                        '互卦': [Trigram_sign[m1]+Trigram[m1], Trigram_sign[m2]+Trigram[m2]],
+                        '變卦': [Trigram_sign[x1n]+Trigram[x1n], Trigram_sign[x2n]+Trigram[x2n]]}, relation)
+    st.table(df2)
 
 
 date_now = datetime.datetime.now(tz)
