@@ -1,3 +1,4 @@
 streamlit==0.64.0
 cnlunardate==0.0.4
 numpy==1.18.1
+pandas==1.0.1
