@@ -105,8 +105,8 @@ day_l = date_l.day
 hour = int((date_now.hour+1)/2 % 12)+1
 if hour == 12:
     hour = 0
-# st.header(Stems[y1]+Branches[y2] + '年' + str(month_l) +'月'+str(day_l)+'號' + Branches[hour] + '時')
-st.text(str(y2)+','+str(month_l)+','+str(day_l)+','+str(hour))
+st.header(Stems[y1]+Branches[y2] + '年' + str(month_l) +'月'+str(day_l)+'號' + Branches[hour] + '時')
+# st.text(str(y2)+','+str(month_l)+','+str(day_l)+','+str(hour))
 method = st.selectbox('請選擇起卦方式', ['依當下時間起卦', '亂數起卦', '輸入數字起卦'])
 
 if method == '依當下時間起卦':
